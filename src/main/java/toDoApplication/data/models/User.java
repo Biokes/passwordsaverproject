@@ -1,4 +1,4 @@
-package toDoApplication.models;
+package toDoApplication.data.models;
 
 
 import lombok.Data;

@@ -1,6 +1,6 @@
-package toDoApplication.repository;
+package toDoApplication.data.repository;
 
-import toDoApplication.models.User;
+import toDoApplication.data.models.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface UserRepository extends MongoRepository<User, String>{

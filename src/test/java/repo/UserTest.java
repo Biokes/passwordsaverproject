@@ -1,9 +1,14 @@
 package repo;
 
-import org.junit.Test;
+import lombok.AllArgsConstructor;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import toDoApplication.repository.UserRepository;
+import toDoApplication.ToDoMain;
+import toDoApplication.data.models.User;
+import toDoApplication.data.repository.UserRepository;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class UserTest{
@@ -11,6 +16,8 @@ public class UserTest{
     private UserRepository userRepository;
     @Test
     public void createAndSaveUser_testUserIsCreatedAndSaved(){
-
+        User user = new User();
+        userRepository.save(user);
+        assertEquals(1,userRepository.count());
     }
 }
