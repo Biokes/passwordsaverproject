@@ -56,8 +56,10 @@ class ToDoUserServicesTest{
         request.setPassword("password");
         userService.register(request);
         TaskRequest taskRequest = new TaskRequest();
+        taskRequest.setUsername("username");
         taskRequest.setTaskName("task name");
         taskRequest.setDueDate("12/12/2024");
+        userService.createTask(taskRequest);
         assertEquals(1,userService.countAllTasks());
     }
 }

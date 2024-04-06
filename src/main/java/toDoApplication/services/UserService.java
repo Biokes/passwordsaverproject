@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import toDoApplication.data.models.User;
 import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
+import toDoApplication.dtos.requests.TaskRequest;
 
 @Service
 public interface UserService{
@@ -12,4 +13,5 @@ public interface UserService{
     void register(RegisterRequest request);
     void deleteUserByUsername(DetailsRequest detailsRequest);
     long countAllTasks();
+    void createTask(TaskRequest taskRequest);
 }

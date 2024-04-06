@@ -2,20 +2,24 @@ package toDoApplication.services;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import toDoApplication.data.models.Task;
 import toDoApplication.data.models.User;
 import toDoApplication.data.repository.UserRepository;
 import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
+import toDoApplication.dtos.requests.TaskRequest;
 import toDoApplication.exception.UserNotFoundException;
 import toDoApplication.utils.Mappers;
 
 import java.util.List;
 
+import static toDoApplication.utils.Mappers.mapToTask;
+
 @Service
 @AllArgsConstructor
 public class ToDoUserServices implements UserService{
     private UserRepository userRepository;
-    private TasksServices tasks;
+    private TasksServices tasksRepository;
     public void save(User user){
         userRepository.save(user);
     }
@@ -37,9 +41,12 @@ public class ToDoUserServices implements UserService{
         }
         throw new UserNotFoundException();
     }
-
-    @Override
     public long countAllTasks(){
-        return tasks.count();
+        return tasksRepository.count();
     }
+    public void createTask(TaskRequest taskRequest){
+        Task task = mapToTask(taskRequest);
+        tasksRepository.create(task);
+    }
+
 }
