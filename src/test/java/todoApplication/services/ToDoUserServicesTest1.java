@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import toDoApplication.ToDoMain;
 import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
+import toDoApplication.dtos.requests.TaskRequest;
 import toDoApplication.exception.InvalidUsernameException;
 import toDoApplication.services.UserService;
 
@@ -20,6 +21,8 @@ class ToDoUserServicesTest{
 @Test
     void createUser_testUserIsCreated(){
         RegisterRequest request = new RegisterRequest();
+        request.setUsername("username");
+        request.setPassword("password");
         userService.register(request);
         assertEquals(1, userService.count());
     }
@@ -45,5 +48,16 @@ class ToDoUserServicesTest{
         detailsRequest.setUsername("user1");
         detailsRequest.setPassword("password");
         assertThrows(InvalidUsernameException.class, ()->userService.deleteUserByUsername(detailsRequest));
+    }
+    @Test
+    void createToDo_testToDoIsCreated(){
+        RegisterRequest request = new RegisterRequest();
+        request.setUsername("username");
+        request.setPassword("password");
+        userService.register(request);
+        TaskRequest taskRequest = new TaskRequest();
+        taskRequest.setTaskName("task name");
+        taskRequest.setDueDate("12/12/2024");
+        assertEquals(1,userService.countAllTasks());
     }
 }

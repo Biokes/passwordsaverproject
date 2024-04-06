@@ -7,12 +7,9 @@ import toDoApplication.dtos.requests.RegisterRequest;
 
 @Service
 public interface UserService{
-
     void save(User user);
-
     long count();
-
     void register(RegisterRequest request);
-
     void deleteUserByUsername(DetailsRequest detailsRequest);
+    long countAllTasks();
 }

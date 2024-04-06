@@ -1,6 +1,6 @@
 package toDoApplication.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import toDoApplication.data.models.User;
 import toDoApplication.data.repository.UserRepository;
@@ -12,27 +12,20 @@ import toDoApplication.utils.Mappers;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class ToDoUserServices implements UserService{
-    @Autowired
     private UserRepository userRepository;
-
-    @Override
+    private TasksServices tasks;
     public void save(User user){
         userRepository.save(user);
     }
-
-    @Override
     public long count(){
-        return 0;
+        return userRepository.count();
     }
-
-    @Override
     public void register(RegisterRequest request){
         User user = Mappers.mapRequestToUser(request);
         save(user);
     }
-
-    @Override
     public void deleteUserByUsername(DetailsRequest detailsRequest){
         List<User> users = userRepository.findAll();
         for(User user: users){
@@ -43,5 +36,10 @@ public class ToDoUserServices implements UserService{
             }
         }
         throw new UserNotFoundException();
+    }
+
+    @Override
+    public long countAllTasks(){
+        return tasks.count();
     }
 }
