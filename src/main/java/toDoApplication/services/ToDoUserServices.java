@@ -76,6 +76,7 @@ public class ToDoUserServices implements UserService{
                 if( task.getTaskName( ).equalsIgnoreCase(request.getTaskName( )) ){
                     task.setStatus(COMPLETED);
                     tasksServices.save(task);
+                    return;
                 }
             }
         }

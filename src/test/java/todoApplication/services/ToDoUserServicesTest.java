@@ -102,7 +102,7 @@ public class ToDoUserServicesTest{
         assertEquals(1, userService.countTasks(taskRequest.getUsername()));
     }
     @Test
-    void completeTask_testTaskISCompleted(){
+    void completeTask_testTaskIsCompleted(){
         RegisterRequest request = new RegisterRequest();
         request.setUsername("username");
         request.setPassword("password");
