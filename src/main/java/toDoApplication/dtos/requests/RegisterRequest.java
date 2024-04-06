@@ -1,11 +1,9 @@
-package toDoApplication.data.models;
-
+package toDoApplication.dtos.requests;
 
 import lombok.Data;
 
 @Data
-public class User{
+public class RegisterRequest{
     private String username;
     private String password;
-
 }
