@@ -31,7 +31,7 @@ public class Mappers{
             task.setDuedate(validateDate(request.getDueDate( )));
             if(Validator.isElapsed(task.getDuedate()))
                 throw new ElapsedDateException();
-        }catch(ParseException  error){
+        }catch(Exception error){
             throw new InvalidDateException();
         }
         return task;
