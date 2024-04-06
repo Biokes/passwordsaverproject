@@ -1,5 +1,4 @@
 package todoApplication.services;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +11,6 @@ import toDoApplication.services.UserService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 
 @SpringBootTest(classes= ToDoMain.class)
 public class ToDoUserServicesTest{
@@ -61,5 +59,13 @@ public class ToDoUserServicesTest{
         taskRequest.setDueDate("12/12/2024");
         userService.createTask(taskRequest);
         assertEquals(1,userService.countTasks(taskRequest.getUsername()));
+    }
+    @Test
+    void registerWithInvaliDetails_testExceptionIsThrown(){
+        RegisterRequest request = new RegisterRequest();
+        request.setUsername("username");
+        request.setPassword("");
+        userService.register(request);
+        assertEquals(0, userService.count());
     }
 }
