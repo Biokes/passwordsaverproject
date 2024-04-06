@@ -5,13 +5,18 @@ import org.springframework.stereotype.Service;
 import toDoApplication.data.models.Task;
 import toDoApplication.data.models.User;
 import toDoApplication.data.repository.UserRepository;
+import toDoApplication.dtos.requests.CompleteRequest;
 import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
 import toDoApplication.dtos.requests.TaskRequest;
+import toDoApplication.exception.TaskDoesNotExistException;
 import toDoApplication.exception.UserNotFoundException;
 import toDoApplication.utils.Mappers;
 
 import java.util.List;
+import java.util.Optional;
+
+import static toDoApplication.data.models.TaskStatus.COMPLETED;
 import static toDoApplication.data.models.TaskStatus.NOT_COMPLETED;
 import static toDoApplication.utils.Mappers.mapToTask;
 import static toDoApplication.utils.Validator.validateRegisterRequest;
@@ -19,8 +24,6 @@ import static toDoApplication.utils.Validator.validateRegisterRequest;
 @Service
 @AllArgsConstructor
 public class ToDoUserServices implements UserService{
-    private UserRepository userRepository;
-    private TasksServices tasksServices;
     public void save(User user){
         userRepository.save(user);
     }
@@ -43,9 +46,6 @@ public class ToDoUserServices implements UserService{
         }
         throw new UserNotFoundException();
     }
-    public long countAllTasks(){
-        return tasksServices.count();
-    }
     public void createTask(TaskRequest taskRequest){
         Task task = mapToTask(taskRequest);
         task.setStatus(NOT_COMPLETED);
@@ -54,11 +54,38 @@ public class ToDoUserServices implements UserService{
     public long countTasks(String username){
         return tasksServices.countUserTasks(username);
     }
-
-    @Override
     public void deleteAll(){
         userRepository.deleteAll();
         tasksServices.deleteAll();
     }
+    public void completeTask(CompleteRequest completeRequest){
+        if(isUsernameExisting(completeRequest.getUsername())){
+            markTaskDone(completeRequest);
+            return;
+        }
+        throw new UserNotFoundException();
+    }
 
+    @Override
+    public boolean checkTask(CompleteRequest completeRequest){
+        return false;
+    }
+
+    private void markTaskDone(CompleteRequest request){
+        for(Task task : tasksServices.findAll( )){
+            if(task.getTaskUser().equalsIgnoreCase(request.getUsername())&& task.getTaskName().equalsIgnoreCase(request.getTaskName())){
+                task.setStatus(COMPLETED);
+                tasksServices.save(task);
+            }
+        }
+        throw new TaskDoesNotExistException();
+    }
+
+    private boolean isUsernameExisting(String username){
+      Optional<User> user= userRepository.findByUsername(username);
+      return user.isPresent();
+    }
+
+    private UserRepository userRepository;
+    private TasksServices tasksServices;
 }

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import toDoApplication.ToDoMain;
+import toDoApplication.dtos.requests.CompleteRequest;
 import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
 import toDoApplication.dtos.requests.TaskRequest;
@@ -13,8 +14,7 @@ import toDoApplication.exception.ElapsedDateException;
 import toDoApplication.exception.UserNotFoundException;
 import toDoApplication.services.UserService;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes= ToDoMain.class)
 public class ToDoUserServicesTest{
@@ -109,10 +109,15 @@ public class ToDoUserServicesTest{
         userService.register(request);
         TaskRequest taskRequest = new TaskRequest();
         taskRequest.setUsername("username");
-        taskRequest.setTaskName("task name");
+        taskRequest.setTaskName("fishing");
         taskRequest.setDueDate("12/12/2024");
         userService.createTask(taskRequest);
         assertEquals(1, userService.countTasks(taskRequest.getUsername()));
+        CompleteRequest completeRequest = new CompleteRequest();
+        completeRequest.setUsername("username");
+        completeRequest.setTaskName("fishing");
+        userService.completeTask(completeRequest);
+        assertTrue(userService.checkTask(completeRequest));
     }
     @Autowired
     private UserService userService;
