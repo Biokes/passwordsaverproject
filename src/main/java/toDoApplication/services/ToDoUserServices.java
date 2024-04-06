@@ -32,7 +32,7 @@ public class ToDoUserServices implements UserService{
         User user = Mappers.mapRequestToUser(request);
         save(user);
     }
-    public void deleteUserByUsername(DetailsRequest detailsRequest){
+    public void deleteUser(DetailsRequest detailsRequest){
         List<User> users = userRepository.findAll();
         for(User user: users){
             if(user.getUsername().equalsIgnoreCase(detailsRequest.getUsername()) &&

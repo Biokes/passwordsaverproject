@@ -9,7 +9,7 @@ public interface UserService{
     void save(User user);
     long count();
     void register(RegisterRequest request);
-    void deleteUserByUsername(DetailsRequest detailsRequest);
+    void deleteUser(DetailsRequest detailsRequest);
     long countAllTasks();
     void createTask(TaskRequest taskRequest);
     long countTasks(String username);
