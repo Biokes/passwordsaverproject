@@ -66,7 +66,7 @@ public class ToDoUserServices implements UserService{
         throw new UserNotFoundException();
     }
     public boolean isTaskCompleted(CompleteRequest completeRequest){
-        if(isUsernameExisting(completeRequest.getUsername( )))
+        if(!isUsernameExisting(completeRequest.getUsername( )))
             throw new UserNotFoundException();
         return tasksServices.findTask(completeRequest).getStatus() == COMPLETED;
     }

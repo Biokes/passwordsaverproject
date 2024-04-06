@@ -8,10 +8,7 @@ import toDoApplication.dtos.requests.CompleteRequest;
 import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
 import toDoApplication.dtos.requests.TaskRequest;
-import toDoApplication.exception.IncompleteDetailsException;
-import toDoApplication.exception.InvalidDateException;
-import toDoApplication.exception.ElapsedDateException;
-import toDoApplication.exception.UserNotFoundException;
+import toDoApplication.exception.*;
 import toDoApplication.services.UserService;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -115,9 +112,28 @@ public class ToDoUserServicesTest{
         assertEquals(1, userService.countTasks(taskRequest.getUsername()));
         CompleteRequest completeRequest = new CompleteRequest();
         completeRequest.setUsername("username");
+        completeRequest.setTaskName("fishing12");
+        assertThrows(TaskDoesNotExistException.class,()->userService.completeTask(completeRequest));
+        completeRequest.setUsername("username12");
+        completeRequest.setTaskName("fishing");
+        assertThrows(UserNotFoundException.class,()->userService.completeTask(completeRequest));
+        completeRequest.setUsername("username");
         completeRequest.setTaskName("fishing");
         userService.completeTask(completeRequest);
         assertTrue(userService.isTaskCompleted(completeRequest));
+    }
+    @Test
+    void viewAllTask_testAllTAskIsViewed(){
+        RegisterRequest request = new RegisterRequest();
+        request.setUsername("username");
+        request.setPassword("password");
+        userService.register(request);
+        TaskRequest taskRequest = new TaskRequest();
+        taskRequest.setUsername("username");
+        taskRequest.setTaskName("fishing");
+        taskRequest.setDueDate("12/12/2024");
+        userService.createTask(taskRequest);
+        ViewTaskRequest view = new ViewTaskRequest();
     }
     @Autowired
     private UserService userService;
