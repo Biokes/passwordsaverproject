@@ -84,7 +84,7 @@ public class ToDoUserServicesTest{
         assertEquals(0, userService.count());
     }
     @Test
-    void deleteTask_testTaskIsDeleted(){
+    void createTaskWithElapsedDateAndInvalidDate_testExceptionIsThrown(){
         RegisterRequest request = new RegisterRequest();
         request.setUsername("username");
         request.setPassword("password");
@@ -98,6 +98,20 @@ public class ToDoUserServicesTest{
         taskRequest.setDueDate("12/12/2022");
         assertThrows(ElapsedDateException.class, ()->userService.createTask(taskRequest));
         taskRequest.setDueDate("12/12/2024");
+        userService.createTask(taskRequest);
+        assertEquals(1, userService.countTasks(taskRequest.getUsername()));
+    }
+    @Test
+    void completeTask_testTaskISCompleted(){
+        RegisterRequest request = new RegisterRequest();
+        request.setUsername("username");
+        request.setPassword("password");
+        userService.register(request);
+        TaskRequest taskRequest = new TaskRequest();
+        taskRequest.setUsername("username");
+        taskRequest.setTaskName("task name");
+        taskRequest.setDueDate("12/12/2024");
+        userService.createTask(taskRequest);
         assertEquals(1, userService.countTasks(taskRequest.getUsername()));
     }
     @Autowired

@@ -1,7 +1,5 @@
 package toDoApplication.utils;
 
-import org.bson.codecs.jsr310.LocalDateCodec;
-import org.springframework.format.datetime.DateFormatter;
 import toDoApplication.data.models.Task;
 import toDoApplication.data.models.User;
 import toDoApplication.dtos.requests.RegisterRequest;
@@ -9,11 +7,7 @@ import toDoApplication.dtos.requests.TaskRequest;
 import toDoApplication.exception.ElapsedDateException;
 import toDoApplication.exception.InvalidDateException;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
-
+import static toDoApplication.utils.Validator.isElapsed;
 import static toDoApplication.utils.Validator.validateDate;
 
 public class Mappers{
@@ -28,12 +22,13 @@ public class Mappers{
         task.setTaskUser(request.getUsername());
         task.setTaskName(request.getTaskName());
         try{
+            request.setDueDate(request.getDueDate( ).replaceAll("D", "/"));
             task.setDuedate(validateDate(request.getDueDate( )));
-            if(Validator.isElapsed(task.getDuedate()))
-                throw new ElapsedDateException();
         }catch(Exception error){
             throw new InvalidDateException();
         }
+        if(isElapsed(task.getDuedate()))
+            throw new ElapsedDateException();
         return task;
     }
 
