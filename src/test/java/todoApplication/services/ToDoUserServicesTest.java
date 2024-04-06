@@ -9,7 +9,7 @@ import toDoApplication.dtos.requests.RegisterRequest;
 import toDoApplication.dtos.requests.TaskRequest;
 import toDoApplication.exception.IncompleteDetailsException;
 import toDoApplication.exception.InvalidDateException;
-import toDoApplication.exception.PastDateException;
+import toDoApplication.exception.ElapsedDateException;
 import toDoApplication.exception.UserNotFoundException;
 import toDoApplication.services.UserService;
 
@@ -96,8 +96,9 @@ public class ToDoUserServicesTest{
         assertThrows(InvalidDateException.class, ()->userService.createTask(taskRequest));
         assertEquals(0,userService.countTasks(taskRequest.getUsername()));
         taskRequest.setDueDate("12/12/2022");
-        assertThrows(PastDateException.class, ()->userService.createTask(taskRequest));
-
+        assertThrows(ElapsedDateException.class, ()->userService.createTask(taskRequest));
+        taskRequest.setDueDate("12/12/2024");
+        assertEquals(1, userService.countTasks(taskRequest.getUsername()));
     }
     @Autowired
     private UserService userService;

@@ -8,6 +8,4 @@ public class TaskRequest{
     private String dueDate;
     private String username;
 
-    public void setUsername(String username){
-    }
 }

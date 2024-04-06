@@ -6,12 +6,15 @@ import toDoApplication.data.models.Task;
 import toDoApplication.data.models.User;
 import toDoApplication.dtos.requests.RegisterRequest;
 import toDoApplication.dtos.requests.TaskRequest;
+import toDoApplication.exception.ElapsedDateException;
 import toDoApplication.exception.InvalidDateException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+
+import static toDoApplication.utils.Validator.validateDate;
 
 public class Mappers{
     public static User mapRequestToUser(RegisterRequest request){
@@ -26,11 +29,12 @@ public class Mappers{
         task.setTaskName(request.getTaskName());
         try{
             task.setDuedate(validateDate(request.getDueDate( )));
+            if(Validator.isElapsed(task.getDuedate()))
+                throw new ElapsedDateException();
         }catch(ParseException  error){
-            throw new InvalidDateException();}
+            throw new InvalidDateException();
+        }
         return task;
     }
-    private static Date validateDate(String date) throws ParseException{
-        return new SimpleDateFormat("dd/MM/yyyy").parse(date);
-    }
+
 }
