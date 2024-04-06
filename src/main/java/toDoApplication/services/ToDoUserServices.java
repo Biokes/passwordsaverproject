@@ -18,7 +18,7 @@ import static toDoApplication.utils.Mappers.mapToTask;
 @AllArgsConstructor
 public class ToDoUserServices implements UserService{
     private UserRepository userRepository;
-    private TasksServices tasksRepository;
+    private TasksServices tasksServices;
     public void save(User user){
         userRepository.save(user);
     }
@@ -41,12 +41,15 @@ public class ToDoUserServices implements UserService{
         throw new UserNotFoundException();
     }
     public long countAllTasks(){
-        return tasksRepository.count();
+        return tasksServices.count();
     }
     public void createTask(TaskRequest taskRequest){
         Task task = mapToTask(taskRequest);
         task.setStatus(NOT_COMPLETED);
-        tasksRepository.create(task);
+        tasksServices.create(task);
+    }
+    public long countTasks(String username){
+        return tasksServices.countUserTasks(username);
     }
 
 }

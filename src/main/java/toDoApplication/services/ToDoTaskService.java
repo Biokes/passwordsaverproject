@@ -16,4 +16,7 @@ private TaskRepository taskRepository;
     public void create(Task task){
         taskRepository.save(task);
     }
+    public long countUserTasks(String username){
+        return taskRepository.findByTaskUser(username).size();
+    }
 }

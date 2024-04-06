@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(classes= ToDoMain.class)
 class ToDoUserServicesTest{
-@Autowired
+    @Autowired
     private UserService userService;
 @Test
     void createUser_testUserIsCreated(){
@@ -60,6 +60,6 @@ class ToDoUserServicesTest{
         taskRequest.setTaskName("task name");
         taskRequest.setDueDate("12/12/2024");
         userService.createTask(taskRequest);
-        assertEquals(1,userService.countAllTasks());
+        assertEquals(1,userService.countTasks(taskRequest.getUsername()));
     }
 }

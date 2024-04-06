@@ -4,7 +4,6 @@ import toDoApplication.data.models.User;
 import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
 import toDoApplication.dtos.requests.TaskRequest;
-
 @Service
 public interface UserService{
     void save(User user);
@@ -13,4 +12,5 @@ public interface UserService{
     void deleteUserByUsername(DetailsRequest detailsRequest);
     long countAllTasks();
     void createTask(TaskRequest taskRequest);
+    long countTasks(String username);
 }
