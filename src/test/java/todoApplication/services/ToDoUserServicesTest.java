@@ -117,7 +117,7 @@ public class ToDoUserServicesTest{
         completeRequest.setUsername("username");
         completeRequest.setTaskName("fishing");
         userService.completeTask(completeRequest);
-        assertTrue(userService.checkTask(completeRequest));
+        assertTrue(userService.isTaskCompleted(completeRequest));
     }
     @Autowired
     private UserService userService;

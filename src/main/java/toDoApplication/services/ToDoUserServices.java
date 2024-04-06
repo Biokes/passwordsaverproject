@@ -65,22 +65,22 @@ public class ToDoUserServices implements UserService{
         }
         throw new UserNotFoundException();
     }
-
-    @Override
-    public boolean checkTask(CompleteRequest completeRequest){
-        return false;
+    public boolean isTaskCompleted(CompleteRequest completeRequest){
+        if(isUsernameExisting(completeRequest.getUsername( )))
+            throw new UserNotFoundException();
+        return tasksServices.findTask(completeRequest).getStatus() == COMPLETED;
     }
-
     private void markTaskDone(CompleteRequest request){
         for(Task task : tasksServices.findAll( )){
-            if(task.getTaskUser().equalsIgnoreCase(request.getUsername())&& task.getTaskName().equalsIgnoreCase(request.getTaskName())){
-                task.setStatus(COMPLETED);
-                tasksServices.save(task);
+            if(task.getTaskUser().equalsIgnoreCase(request.getUsername())){
+                if( task.getTaskName( ).equalsIgnoreCase(request.getTaskName( )) ){
+                    task.setStatus(COMPLETED);
+                    tasksServices.save(task);
+                }
             }
         }
         throw new TaskDoesNotExistException();
     }
-
     private boolean isUsernameExisting(String username){
       Optional<User> user= userRepository.findByUsername(username);
       return user.isPresent();

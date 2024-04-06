@@ -15,6 +15,6 @@ public interface UserService{
     long countTasks(String username);
     void deleteAll();
     void completeTask(CompleteRequest completeRequest);
-    boolean checkTask(CompleteRequest completeRequest);
+    boolean isTaskCompleted(CompleteRequest completeRequest);
 
 }

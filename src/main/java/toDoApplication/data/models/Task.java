@@ -14,4 +14,5 @@ public class Task{
     private String taskUser;
     private LocalDate duedate;
     private TaskStatus status;
+
 }
