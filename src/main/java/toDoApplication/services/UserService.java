@@ -2,6 +2,7 @@ package toDoApplication.services;
 
 import org.springframework.stereotype.Service;
 import toDoApplication.data.models.User;
+import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
 
 @Service
@@ -12,4 +13,6 @@ public interface UserService{
     long count();
 
     void register(RegisterRequest request);
+
+    void deleteUserByUsername(DetailsRequest detailsRequest);
 }
