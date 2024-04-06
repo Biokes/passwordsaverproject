@@ -25,11 +25,6 @@ public class ToDoTaskService implements TasksServices{
     public List<Task> findAll(){
         return taskRepository.findAll();
     }
-    public Task findTaskBy(String taskName){
-       Optional<Task> taskGotten = taskRepository.findByTaskName(taskName);
-       if( taskGotten.isEmpty() ) throw new TaskDoesNotExistException();
-       return (Task)taskGotten.get();
-    }
     public void save(Task task){
         taskRepository.save(task);
     }
