@@ -1,5 +1,4 @@
 package toDoApplication.services;
-
 import org.springframework.stereotype.Service;
 import toDoApplication.data.models.User;
 import toDoApplication.dtos.requests.DetailsRequest;

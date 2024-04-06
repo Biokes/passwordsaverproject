@@ -10,9 +10,8 @@ import toDoApplication.dtos.requests.RegisterRequest;
 import toDoApplication.dtos.requests.TaskRequest;
 import toDoApplication.exception.UserNotFoundException;
 import toDoApplication.utils.Mappers;
-
 import java.util.List;
-
+import static toDoApplication.data.models.TaskStatus.NOT_COMPLETED;
 import static toDoApplication.utils.Mappers.mapToTask;
 
 @Service
@@ -46,6 +45,7 @@ public class ToDoUserServices implements UserService{
     }
     public void createTask(TaskRequest taskRequest){
         Task task = mapToTask(taskRequest);
+        task.setStatus(NOT_COMPLETED);
         tasksRepository.create(task);
     }
 
