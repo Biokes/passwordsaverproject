@@ -19,4 +19,7 @@ private TaskRepository taskRepository;
     public long countUserTasks(String username){
         return taskRepository.findByTaskUser(username).size();
     }
+    public void deleteAll(){
+        taskRepository.deleteAll();
+    }
 }

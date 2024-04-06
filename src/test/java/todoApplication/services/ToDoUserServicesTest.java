@@ -1,4 +1,5 @@
 package todoApplication.services;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -6,6 +7,7 @@ import toDoApplication.ToDoMain;
 import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
 import toDoApplication.dtos.requests.TaskRequest;
+import toDoApplication.exception.IncompleteDetailsException;
 import toDoApplication.exception.InvalidUsernameException;
 import toDoApplication.services.UserService;
 
@@ -14,9 +16,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(classes= ToDoMain.class)
 public class ToDoUserServicesTest{
-    @Autowired
-    private UserService userService;
-@Test
+    @BeforeEach
+    void wipe(){
+        userService.deleteAll();
+    }
+    @Test
     void createUser_testUserIsCreated(){
         RegisterRequest request = new RegisterRequest();
         request.setUsername("username");
@@ -65,7 +69,9 @@ public class ToDoUserServicesTest{
         RegisterRequest request = new RegisterRequest();
         request.setUsername("username");
         request.setPassword("");
-        userService.register(request);
+        assertThrows(IncompleteDetailsException.class,()->userService.register(request));
         assertEquals(0, userService.count());
     }
+    @Autowired
+    private UserService userService;
 }

@@ -10,9 +10,11 @@ import toDoApplication.dtos.requests.RegisterRequest;
 import toDoApplication.dtos.requests.TaskRequest;
 import toDoApplication.exception.UserNotFoundException;
 import toDoApplication.utils.Mappers;
+
 import java.util.List;
 import static toDoApplication.data.models.TaskStatus.NOT_COMPLETED;
 import static toDoApplication.utils.Mappers.mapToTask;
+import static toDoApplication.utils.Validator.validateRegisterRequest;
 
 @Service
 @AllArgsConstructor
@@ -26,6 +28,7 @@ public class ToDoUserServices implements UserService{
         return userRepository.count();
     }
     public void register(RegisterRequest request){
+        validateRegisterRequest(request);
         User user = Mappers.mapRequestToUser(request);
         save(user);
     }
@@ -50,6 +53,12 @@ public class ToDoUserServices implements UserService{
     }
     public long countTasks(String username){
         return tasksServices.countUserTasks(username);
+    }
+
+    @Override
+    public void deleteAll(){
+        userRepository.deleteAll();
+        tasksServices.deleteAll();
     }
 
 }

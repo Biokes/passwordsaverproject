@@ -13,4 +13,5 @@ public interface UserService{
     long countAllTasks();
     void createTask(TaskRequest taskRequest);
     long countTasks(String username);
+    void deleteAll();
 }

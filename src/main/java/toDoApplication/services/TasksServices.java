@@ -8,4 +8,6 @@ public interface TasksServices{
     long count();
     void create(Task task);
     long countUserTasks(String username);
+    void deleteAll();
+
 }
