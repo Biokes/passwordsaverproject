@@ -1,5 +1,4 @@
 package todoApplication;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,7 @@ import toDoApplication.data.repository.UserRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(classes = ToDoMain.class )
+@SpringBootTest(classes = ToDoMain.class)
 class UserRepoTest{
     @Autowired
     private UserRepository userRepository;

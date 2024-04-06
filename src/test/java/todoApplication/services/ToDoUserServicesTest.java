@@ -9,6 +9,7 @@ import toDoApplication.dtos.requests.RegisterRequest;
 import toDoApplication.dtos.requests.TaskRequest;
 import toDoApplication.exception.IncompleteDetailsException;
 import toDoApplication.exception.InvalidUsernameException;
+import toDoApplication.exception.UserNotFoundException;
 import toDoApplication.services.UserService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,7 +50,7 @@ public class ToDoUserServicesTest{
         DetailsRequest detailsRequest = new DetailsRequest();
         detailsRequest.setUsername("user1");
         detailsRequest.setPassword("password");
-        assertThrows(InvalidUsernameException.class, ()->userService.deleteUserByUsername(detailsRequest));
+        assertThrows(UserNotFoundException.class, ()->userService.deleteUserByUsername(detailsRequest));
     }
     @Test
     void createToDo_testToDoIsCreated(){
@@ -72,6 +73,9 @@ public class ToDoUserServicesTest{
         assertThrows(IncompleteDetailsException.class,()->userService.register(request));
         assertEquals(0, userService.count());
     }
+    @Test
+    void test(){}
     @Autowired
     private UserService userService;
+
 }
