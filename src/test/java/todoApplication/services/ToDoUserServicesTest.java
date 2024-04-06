@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @SpringBootTest(classes= ToDoMain.class)
-class ToDoUserServicesTest{
+public class ToDoUserServicesTest{
     @Autowired
     private UserService userService;
 @Test
