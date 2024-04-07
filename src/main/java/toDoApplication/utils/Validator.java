@@ -6,11 +6,9 @@ import toDoApplication.exception.IncompleteDetailsException;
 import toDoApplication.exception.InvalidDateException;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Locale;
+
 
 public class Validator{
     public static void validate(String details){
@@ -31,7 +29,6 @@ public class Validator{
     public static boolean isElapsed(LocalDate date){
         return date.isBefore(LocalDate.now());
     }
-
     public static void validateDetailsRequest(DetailsRequest detailsRequest){
         validate(detailsRequest.getUsername( ));
         validate(detailsRequest.getPassword( ));
