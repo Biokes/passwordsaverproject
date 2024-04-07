@@ -139,7 +139,7 @@ public class ToDoUserServicesTest{
         completeRequest.setTaskName("fishing");
         userService.completeTask(completeRequest);
         expected = userService.viewAllTasks("username");
-        assertEquals(String.format("Task Name : %s\nDue Date : %s\nStatus : %s\n","fishing","2024-12-12","COMPLETED"),
+        assertEquals(String.format("Task Name : %s\nDue Date : %s\nStatus : %s\n","fishing","12/12/2024","COMPLETED"),
                 expected.getBody());
 
     }

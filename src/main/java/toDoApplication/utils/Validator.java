@@ -3,6 +3,7 @@ package toDoApplication.utils;
 import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
 import toDoApplication.exception.IncompleteDetailsException;
+import toDoApplication.exception.InvalidDateException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,6 +24,8 @@ public class Validator{
         validate(request.getUsername().strip());
     }
     public static LocalDate validateDate(String date) throws ParseException{
+        if(date.length()!= 10)
+            throw new InvalidDateException();
         return LocalDate.parse(date,DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
     public static boolean isElapsed(LocalDate date){
