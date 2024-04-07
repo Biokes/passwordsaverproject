@@ -82,7 +82,7 @@ public class ToDoUserServices implements UserService{
         StringBuilder output = new StringBuilder();
         for(Task task : tasksServices.findUserTasks(username)){
             output.append(String.format("Task Name : %s\nDue Date : %s\nStatus : %s\n",
-                    task.getTaskName(), new SimpleDateFormat("dd/MM/yyyy").format(task.getDuedate().toString()), task.getStatus()));
+                    task.getTaskName(), task.getDuedate(), task.getStatus()));
         }
         if( output.isEmpty( ))
             return "no tasks yet";
