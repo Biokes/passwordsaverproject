@@ -15,4 +15,5 @@ public interface TasksServices{
     List<Task> findAll();
     void save(Task task);
     Task findTask(CompleteRequest completeRequest);
+    List<Task> findUserTasks(String username);
 }

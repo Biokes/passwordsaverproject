@@ -9,6 +9,7 @@ import toDoApplication.dtos.requests.CompleteRequest;
 import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
 import toDoApplication.dtos.requests.TaskRequest;
+import toDoApplication.dtos.response.ViewTaskResponse;
 import toDoApplication.exception.TaskDoesNotExistException;
 import toDoApplication.exception.UserNotFoundException;
 import toDoApplication.utils.Mappers;
@@ -66,9 +67,28 @@ public class ToDoUserServices implements UserService{
         throw new UserNotFoundException();
     }
     public boolean isTaskCompleted(CompleteRequest completeRequest){
-        if(!isUsernameExisting(completeRequest.getUsername( )))
-            throw new UserNotFoundException();
+        confirmUsername(completeRequest.getUsername());
         return tasksServices.findTask(completeRequest).getStatus() == COMPLETED;
+    }
+    public ViewTaskResponse viewAllTasks(String username){
+        confirmUsername(username);
+        ViewTaskResponse response = new ViewTaskResponse();
+        response.setBody(getAllTasks(username));
+        return response;
+    }
+    private String getAllTasks(String username){
+        StringBuilder output = new StringBuilder();
+        for(Task task : tasksServices.findUserTasks(username)){
+            output.append(String.format("Task Name : %s\nDue Date : %s\nStatus : %s",
+                    task.getTaskName(), task.getDuedate(), task.getStatus()));
+        }
+        if( output.isEmpty( ))
+            return "no tasks yet";
+        return output.toString();
+    }
+    private void confirmUsername(String username){
+        if(!isUsernameExisting(username))
+            throw new UserNotFoundException();
     }
     private void markTaskDone(CompleteRequest request){
         for(Task task : tasksServices.findAll( )){

@@ -4,10 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import toDoApplication.ToDoMain;
-import toDoApplication.dtos.requests.CompleteRequest;
-import toDoApplication.dtos.requests.DetailsRequest;
-import toDoApplication.dtos.requests.RegisterRequest;
-import toDoApplication.dtos.requests.TaskRequest;
+import toDoApplication.dtos.requests.*;
 import toDoApplication.exception.*;
 import toDoApplication.services.UserService;
 
@@ -133,7 +130,7 @@ public class ToDoUserServicesTest{
         taskRequest.setTaskName("fishing");
         taskRequest.setDueDate("12/12/2024");
         userService.createTask(taskRequest);
-        ViewTaskRequest view = new ViewTaskRequest();
+        userService.viewAllTasks("username");
     }
     @Autowired
     private UserService userService;

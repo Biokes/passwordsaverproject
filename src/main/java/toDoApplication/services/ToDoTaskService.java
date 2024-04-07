@@ -7,6 +7,7 @@ import toDoApplication.data.repository.TaskRepository;
 import toDoApplication.dtos.requests.CompleteRequest;
 import toDoApplication.exception.TaskDoesNotExistException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +36,14 @@ public class ToDoTaskService implements TasksServices{
                 return task;
         }
         throw new TaskDoesNotExistException();
+    }
+    public List<Task> findUserTasks(String username){
+        List<Task> taskList = new ArrayList<>();
+        for(Task task : taskList){
+            if(task.getTaskUser().equalsIgnoreCase(username))
+                taskList.add(task);
+        }
+        return taskList;
     }
 
     private TaskRepository taskRepository;

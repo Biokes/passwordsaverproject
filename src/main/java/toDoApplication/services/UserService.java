@@ -5,6 +5,8 @@ import toDoApplication.dtos.requests.CompleteRequest;
 import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
 import toDoApplication.dtos.requests.TaskRequest;
+import toDoApplication.dtos.response.ViewTaskResponse;
+
 @Service
 public interface UserService{
     void save(User user);
@@ -16,5 +18,5 @@ public interface UserService{
     void deleteAll();
     void completeTask(CompleteRequest completeRequest);
     boolean isTaskCompleted(CompleteRequest completeRequest);
-
+    ViewTaskResponse viewAllTasks(String username);
 }
