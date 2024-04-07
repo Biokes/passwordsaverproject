@@ -7,6 +7,9 @@ import toDoApplication.dtos.requests.TaskRequest;
 import toDoApplication.exception.ElapsedDateException;
 import toDoApplication.exception.InvalidDateException;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import static toDoApplication.utils.Validator.isElapsed;
 import static toDoApplication.utils.Validator.validateDate;
 
@@ -22,8 +25,9 @@ public class Mappers{
         task.setTaskUser(request.getUsername());
         task.setTaskName(request.getTaskName());
         try{
-            request.setDueDate(request.getDueDate( ).replaceAll("D", "/"));
-            task.setDuedate(validateDate(request.getDueDate( )));
+            request.setDueDate(request.getDueDate( ).strip().replaceAll("\\D", "/"));
+            task.setDuedate(LocalDate.parse(validateDate(request.getDueDate( ))
+                                                    .format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
         }catch(Exception error){
             throw new InvalidDateException();
         }

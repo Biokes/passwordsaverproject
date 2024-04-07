@@ -13,9 +13,10 @@ import java.util.Locale;
 
 public class Validator{
     public static void validate(String details){
-        if(details == null || details.isBlank()){
+        if(details == null || details.isBlank() ){
             throw new IncompleteDetailsException();
         }
+        details = details.strip();
     }
     public static void validateRegisterRequest(RegisterRequest request){
         validate(request.getPassword().strip());

@@ -91,7 +91,8 @@ public class ToDoUserServices implements UserService{
         confirmUsername(username);
         StringBuilder output = new StringBuilder();
         for(Task task : tasksServices.findUserTasks(username)){
-            output.append(String.format("Task Name : %s\nDue Date : %s\nStatus : %s\n", task.getTaskName(),
+            output.append(String.format("Task Name : %s\nDue Date : %s\nStatus : %s\n",
+                    task.getTaskName(),
                     task.getDuedate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                     task.getStatus()));
         }
