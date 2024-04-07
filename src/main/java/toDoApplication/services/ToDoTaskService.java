@@ -45,6 +45,9 @@ public class ToDoTaskService implements TasksServices{
         }
         return taskList;
     }
+    public void deleteUserTasks(String username){
+        taskRepository.deleteAll(taskRepository.findByTaskUser(username));
+    }
 
     private TaskRepository taskRepository;
 }

@@ -16,4 +16,5 @@ public interface TasksServices{
     void save(Task task);
     Task findTask(CompleteRequest completeRequest);
     List<Task> findUserTasks(String username);
+    void deleteUserTasks(String username);
 }

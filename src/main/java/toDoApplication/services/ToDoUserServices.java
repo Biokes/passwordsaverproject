@@ -14,6 +14,7 @@ import toDoApplication.exception.TaskDoesNotExistException;
 import toDoApplication.exception.UserNotFoundException;
 import toDoApplication.exception.UsernameTakenException;
 import toDoApplication.utils.Mappers;
+import toDoApplication.utils.Validator;
 
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
@@ -42,22 +43,27 @@ public class ToDoUserServices implements UserService{
         save(user);
     }
     public void deleteUser(DetailsRequest detailsRequest){
+        Validator.validateDetailsRequest(detailsRequest);
         List<User> users = userRepository.findAll();
         for(User user: users){
             if(user.getUsername().equalsIgnoreCase(detailsRequest.getUsername()) &&
             user.getPassword().equalsIgnoreCase(detailsRequest.getPassword())){
                 userRepository.delete(user);
+                tasksServices.deleteUserTasks(detailsRequest.getUsername());
                 return;
             }
         }
         throw new UserNotFoundException();
     }
     public void createTask(TaskRequest taskRequest){
+        confirmUsername(taskRequest.getUsername());
         Task task = mapToTask(taskRequest);
         task.setStatus(NOT_COMPLETED);
         tasksServices.create(task);
     }
     public long countTasks(String username){
+        if(!isUsernameExisting(username))
+            throw new UserNotFoundException();
         return tasksServices.countUserTasks(username);
     }
     public void deleteAll(){

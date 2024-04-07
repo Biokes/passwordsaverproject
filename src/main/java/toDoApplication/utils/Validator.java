@@ -1,5 +1,6 @@
 package toDoApplication.utils;
 
+import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
 import toDoApplication.exception.IncompleteDetailsException;
 
@@ -25,5 +26,10 @@ public class Validator{
     }
     public static boolean isElapsed(LocalDate date){
         return date.isBefore(LocalDate.now());
+    }
+
+    public static void validateDetailsRequest(DetailsRequest detailsRequest){
+        validate(detailsRequest.getUsername( ));
+        validate(detailsRequest.getPassword( ));
     }
 }

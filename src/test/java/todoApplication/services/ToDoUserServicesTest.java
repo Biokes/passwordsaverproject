@@ -161,8 +161,11 @@ public class ToDoUserServicesTest{
         taskRequest.setUsername("username");
         taskRequest.setTaskName("fishing");
         taskRequest.setDueDate("12/12/2024");
-        assertThrows(InvalidUsernameException.class,()->userService.createTask(taskRequest));
+        assertThrows(UserNotFoundException.class,()->userService.createTask(taskRequest));
         taskRequest.setUsername("user101");
+        userService.createTask(taskRequest);
+        assertEquals(1, userService.countTasks("user101"));
+        assertThrows(UserNotFoundException.class,()->userService.countTasks("user10"));
         userService.deleteUser(details);
         assertThrows(UserNotFoundException.class,()->userService.countTasks("user101"));
     }
