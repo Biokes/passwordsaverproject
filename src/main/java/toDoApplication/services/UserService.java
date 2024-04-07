@@ -18,5 +18,5 @@ public interface UserService{
     void deleteAll();
     void completeTask(CompleteRequest completeRequest);
     boolean isTaskCompleted(CompleteRequest completeRequest);
-    ViewTaskResponse viewAllTasks(String username);
+    ViewTaskResponse viewAllTasks(DetailsRequest request);
 }

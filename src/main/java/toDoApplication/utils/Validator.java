@@ -1,7 +1,9 @@
 package toDoApplication.utils;
 
+import toDoApplication.dtos.requests.CompleteRequest;
 import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
+import toDoApplication.dtos.requests.TaskRequest;
 import toDoApplication.exception.IncompleteDetailsException;
 import toDoApplication.exception.InvalidDateException;
 
@@ -32,5 +34,14 @@ public class Validator{
     public static void validateDetailsRequest(DetailsRequest detailsRequest){
         validate(detailsRequest.getUsername( ));
         validate(detailsRequest.getPassword( ));
+    }
+    public static void validateCompleteRequest(CompleteRequest completeRequest){
+        validate(completeRequest.getUsername( ));
+        validate(completeRequest.getTaskName( ));
+    }
+    public static void validateTaskRequest(TaskRequest taskRequest){
+        validate(taskRequest.getTaskName( ));
+        validate(taskRequest.getUsername( ));
+        validate(taskRequest.getDueDate( ));
     }
 }

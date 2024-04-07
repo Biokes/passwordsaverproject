@@ -24,7 +24,7 @@ import java.util.Optional;
 import static toDoApplication.data.models.TaskStatus.COMPLETED;
 import static toDoApplication.data.models.TaskStatus.NOT_COMPLETED;
 import static toDoApplication.utils.Mappers.mapToTask;
-import static toDoApplication.utils.Validator.validateRegisterRequest;
+import static toDoApplication.utils.Validator.*;
 
 @Service
 @AllArgsConstructor
@@ -56,6 +56,7 @@ public class ToDoUserServices implements UserService{
         throw new UserNotFoundException();
     }
     public void createTask(TaskRequest taskRequest){
+        Validator.validateTaskRequest(taskRequest);
         confirmUsername(taskRequest.getUsername());
         Task task = mapToTask(taskRequest);
         task.setStatus(NOT_COMPLETED);
@@ -71,6 +72,7 @@ public class ToDoUserServices implements UserService{
         tasksServices.deleteAll();
     }
     public void completeTask(CompleteRequest completeRequest){
+        validateCompleteRequest(completeRequest);
         if(isUsernameExisting(completeRequest.getUsername())){
             markTaskDone(completeRequest);
             return;
@@ -78,13 +80,17 @@ public class ToDoUserServices implements UserService{
         throw new UserNotFoundException();
     }
     public boolean isTaskCompleted(CompleteRequest completeRequest){
+        validateCompleteRequest(completeRequest);
         confirmUsername(completeRequest.getUsername());
         return tasksServices.findTask(completeRequest).getStatus() == COMPLETED;
     }
-    public ViewTaskResponse viewAllTasks(String username){
-        confirmUsername(username);
+    public ViewTaskResponse viewAllTasks(DetailsRequest request){
+        validateDetailsRequest(request);
+        if(!isExistingUser(request))
+            throw new UserNotFoundException();
+        confirmUsername(request.getUsername());
         ViewTaskResponse response = new ViewTaskResponse();
-        response.setBody(getAllTasks(username));
+        response.setBody(getAllTasks(request.getUsername()));
         return response;
     }
     private String getAllTasks(String username){
@@ -119,6 +125,10 @@ public class ToDoUserServices implements UserService{
     private boolean isUsernameExisting(String username){
       Optional<User> user= userRepository.findByUsername(username);
       return user.isPresent();
+    }
+    private boolean isExistingUser(DetailsRequest request){
+       Optional<User> user = userRepository.findByUsername(request.getUsername( ));
+        return user.isPresent( )&&user.get( ).getPassword( ).equalsIgnoreCase(request.getPassword( ));
     }
 
     private UserRepository userRepository;

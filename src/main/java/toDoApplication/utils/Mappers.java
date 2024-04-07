@@ -7,11 +7,11 @@ import toDoApplication.dtos.requests.TaskRequest;
 import toDoApplication.exception.ElapsedDateException;
 import toDoApplication.exception.InvalidDateException;
 
-import static toDoApplication.utils.Validator.isElapsed;
-import static toDoApplication.utils.Validator.validateDate;
+import static toDoApplication.utils.Validator.*;
 
 public class Mappers{
     public static User mapRequestToUser(RegisterRequest request){
+        validateRegisterRequest(request);
         User user = new User();
         user.setUsername(request.getUsername());
         user.setPassword(request.getPassword());

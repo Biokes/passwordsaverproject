@@ -131,7 +131,10 @@ public class ToDoUserServicesTest{
         taskRequest.setTaskName("fishing");
         taskRequest.setDueDate("12/12/2024");
         userService.createTask(taskRequest);
-        ViewTaskResponse expected = userService.viewAllTasks("username");
+        DetailsRequest detailsRequest = new DetailsRequest();
+        detailsRequest.setUsername("username");
+        detailsRequest.setPassword("password");
+        ViewTaskResponse expected = userService.viewAllTasks(detailsRequest);
         assertEquals(String.format("Task Name : %s\nDue Date : %s\nStatus : %s\n",
                         "fishing","12/12/2024","NOT_COMPLETED"),
                 expected.getBody());
@@ -139,7 +142,7 @@ public class ToDoUserServicesTest{
         completeRequest.setUsername("username");
         completeRequest.setTaskName("fishing");
         userService.completeTask(completeRequest);
-        expected = userService.viewAllTasks("username");
+        expected = userService.viewAllTasks(detailsRequest);
         assertEquals(String.format("Task Name : %s\nDue Date : %s\nStatus : %s\n",
                         "fishing","12/12/2024","COMPLETED"),
                 expected.getBody());

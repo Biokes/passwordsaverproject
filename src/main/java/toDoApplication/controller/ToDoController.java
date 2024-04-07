@@ -3,9 +3,11 @@ package toDoApplication.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import toDoApplication.dtos.requests.CompleteRequest;
 import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
 import toDoApplication.dtos.requests.TaskRequest;
+import toDoApplication.dtos.response.ViewTaskResponse;
 import toDoApplication.exception.ToDoManagerExceptions;
 import toDoApplication.services.UserService;
 
@@ -41,6 +43,26 @@ public class ToDoController{
         try{
             userService.createTask(request);
             return new ResponseEntity<>("Task created successfully", OK);
+        }
+        catch(ToDoManagerExceptions error){
+            return new ResponseEntity<>(error.getMessage(), BAD_REQUEST);
+        }
+    }
+    @PostMapping("/mark-task-Done")
+    public ResponseEntity<?> markTaskAsDone(@RequestBody CompleteRequest request){
+        try{
+            userService.completeTask(request);
+            return new ResponseEntity<>("successfully marked", OK);
+        }
+        catch(ToDoManagerExceptions error){
+            return new ResponseEntity<>(error.getMessage(), BAD_REQUEST);
+        }
+    }
+    @GetMapping("view-all-task")
+    public ResponseEntity<?> viewAllTasks(@RequestBody DetailsRequest request){
+        try{
+            ViewTaskResponse response = userService.viewAllTasks(request);
+            return new ResponseEntity<>(response.getBody(), OK);
         }
         catch(ToDoManagerExceptions error){
             return new ResponseEntity<>(error.getMessage(), BAD_REQUEST);
