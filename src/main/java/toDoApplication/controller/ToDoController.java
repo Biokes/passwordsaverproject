@@ -1,5 +1,4 @@
 package toDoApplication.controller;
-
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +11,6 @@ import toDoApplication.exception.ToDoManagerExceptions;
 import toDoApplication.services.UserService;
 
 import static org.springframework.http.HttpStatus.*;
-
 @RestController
 @AllArgsConstructor
 @RequestMapping("/ToDo/")
