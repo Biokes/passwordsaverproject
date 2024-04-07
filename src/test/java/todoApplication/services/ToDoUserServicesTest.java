@@ -143,6 +143,29 @@ public class ToDoUserServicesTest{
                 expected.getBody());
 
     }
+    @Test
+    void validateInput_testInputsAreValidated(){
+        RegisterRequest  request = new RegisterRequest();
+        request.setUsername("user101");
+        request.setPassword("");
+        assertThrows(IncompleteDetailsException.class,()->userService.register(request));
+        request.setPassword("password");
+        userService.register(request);
+        assertThrows(UsernameTakenException.class,()->userService.register(request));
+        DetailsRequest details = new DetailsRequest();
+        assertThrows(IncompleteDetailsException.class,()->userService.deleteUser(details));
+        details.setPassword("password");
+        assertThrows(IncompleteDetailsException.class,()->userService.deleteUser(details));
+        details.setUsername("user101");
+        TaskRequest taskRequest = new TaskRequest();
+        taskRequest.setUsername("username");
+        taskRequest.setTaskName("fishing");
+        taskRequest.setDueDate("12/12/2024");
+        assertThrows(InvalidUsernameException.class,()->userService.createTask(taskRequest));
+        taskRequest.setUsername("user101");
+        userService.deleteUser(details);
+        assertThrows(UserNotFoundException.class,()->userService.countTasks("user101"));
+    }
     @Autowired
     private UserService userService;
 

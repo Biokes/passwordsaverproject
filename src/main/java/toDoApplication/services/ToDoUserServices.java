@@ -12,9 +12,11 @@ import toDoApplication.dtos.requests.TaskRequest;
 import toDoApplication.dtos.response.ViewTaskResponse;
 import toDoApplication.exception.TaskDoesNotExistException;
 import toDoApplication.exception.UserNotFoundException;
+import toDoApplication.exception.UsernameTakenException;
 import toDoApplication.utils.Mappers;
 
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +36,8 @@ public class ToDoUserServices implements UserService{
     }
     public void register(RegisterRequest request){
         validateRegisterRequest(request);
+        if(isUsernameExisting(request.getUsername( )))
+            throw new UsernameTakenException(request.getUsername( ));
         User user = Mappers.mapRequestToUser(request);
         save(user);
     }
@@ -81,8 +85,9 @@ public class ToDoUserServices implements UserService{
         confirmUsername(username);
         StringBuilder output = new StringBuilder();
         for(Task task : tasksServices.findUserTasks(username)){
-            output.append(String.format("Task Name : %s\nDue Date : %s\nStatus : %s\n",
-                    task.getTaskName(), task.getDuedate(), task.getStatus()));
+            output.append(String.format("Task Name : %s\nDue Date : %s\nStatus : %s\n", task.getTaskName(),
+                    task.getDuedate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                    task.getStatus()));
         }
         if( output.isEmpty( ))
             return "no tasks yet";
