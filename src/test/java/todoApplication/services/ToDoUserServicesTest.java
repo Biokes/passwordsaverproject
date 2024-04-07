@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import toDoApplication.ToDoMain;
 import toDoApplication.dtos.requests.*;
+import toDoApplication.dtos.response.ViewTaskResponse;
 import toDoApplication.exception.*;
 import toDoApplication.services.UserService;
 
@@ -130,7 +131,8 @@ public class ToDoUserServicesTest{
         taskRequest.setTaskName("fishing");
         taskRequest.setDueDate("12/12/2024");
         userService.createTask(taskRequest);
-        userService.viewAllTasks("username");
+        ViewTaskResponse expected = userService.viewAllTasks("username");
+
     }
     @Autowired
     private UserService userService;

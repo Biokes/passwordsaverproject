@@ -77,9 +77,10 @@ public class ToDoUserServices implements UserService{
         return response;
     }
     private String getAllTasks(String username){
+        confirmUsername(username);
         StringBuilder output = new StringBuilder();
         for(Task task : tasksServices.findUserTasks(username)){
-            output.append(String.format("Task Name : %s\nDue Date : %s\nStatus : %s",
+            output.append(String.format("Task Name : %s\nDue Date : %s\nStatus : %s\n",
                     task.getTaskName(), task.getDuedate(), task.getStatus()));
         }
         if( output.isEmpty( ))
