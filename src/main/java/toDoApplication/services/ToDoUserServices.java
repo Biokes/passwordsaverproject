@@ -14,6 +14,7 @@ import toDoApplication.exception.TaskDoesNotExistException;
 import toDoApplication.exception.UserNotFoundException;
 import toDoApplication.utils.Mappers;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,7 +82,7 @@ public class ToDoUserServices implements UserService{
         StringBuilder output = new StringBuilder();
         for(Task task : tasksServices.findUserTasks(username)){
             output.append(String.format("Task Name : %s\nDue Date : %s\nStatus : %s\n",
-                    task.getTaskName(), task.getDuedate(), task.getStatus()));
+                    task.getTaskName(), new SimpleDateFormat("dd/MM/yyyy").format(task.getDuedate().toString()), task.getStatus()));
         }
         if( output.isEmpty( ))
             return "no tasks yet";
