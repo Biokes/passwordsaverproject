@@ -132,6 +132,8 @@ public class ToDoUserServicesTest{
         taskRequest.setDueDate("12/12/2024");
         userService.createTask(taskRequest);
         ViewTaskResponse expected = userService.viewAllTasks("username");
+        assertEquals(String.format("Task name : %s\nDue Date : %s\nStatus : %s\n","fishing","12/12/2024","NOT_COMPLETED"),
+                expected.getBody());
 
     }
     @Autowired

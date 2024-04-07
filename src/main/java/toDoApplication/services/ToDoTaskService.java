@@ -39,7 +39,7 @@ public class ToDoTaskService implements TasksServices{
     }
     public List<Task> findUserTasks(String username){
         List<Task> taskList = new ArrayList<>();
-        for(Task task : taskList){
+        for(Task task : findAll()){
             if(task.getTaskUser().equalsIgnoreCase(username))
                 taskList.add(task);
         }
