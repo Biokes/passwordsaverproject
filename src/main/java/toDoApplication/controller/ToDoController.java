@@ -13,7 +13,7 @@ import toDoApplication.services.UserService;
 import static org.springframework.http.HttpStatus.*;
 @RestController
 @AllArgsConstructor
-@RequestMapping("/ToDo/")
+@RequestMapping("/ToDo")
 public class ToDoController{
     private UserService userService;
     @PostMapping("/Register")
