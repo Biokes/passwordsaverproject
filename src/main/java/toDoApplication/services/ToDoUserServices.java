@@ -8,7 +8,7 @@ import toDoApplication.data.repository.UserRepository;
 import toDoApplication.dtos.requests.CompleteTaskRequest;
 import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
-import toDoApplication.dtos.requests.TaskRequest;
+import toDoApplication.dtos.requests.CreateTaskRequest;
 import toDoApplication.dtos.response.CompleteTaskResponse;
 import toDoApplication.dtos.response.ViewTaskResponse;
 import toDoApplication.exception.TaskDoesNotExistException;
@@ -55,10 +55,10 @@ public class ToDoUserServices implements UserService{
             }
         throw new UserNotFoundException();
     }
-    public void createTask(TaskRequest taskRequest){
-        Validator.validateTaskRequest(taskRequest);
-        confirmUsername(taskRequest.getUsername());
-        Task task = mapToTask(taskRequest);
+    public void createTask(CreateTaskRequest createTaskRequest){
+        Validator.validateTaskRequest(createTaskRequest);
+        confirmUsername(createTaskRequest.getUsername());
+        Task task = mapToTask(createTaskRequest);
         task.setStatus(NOT_COMPLETED);
         tasksServices.create(task);
     }
@@ -74,7 +74,7 @@ public class ToDoUserServices implements UserService{
     public CompleteTaskResponse completeTask(CompleteTaskRequest completeTaskRequest){
         validateCompleteRequest(completeTaskRequest);
         if(isUsernameExisting(completeTaskRequest.getUsername())){
-            return Mappers.mapCompleteTask(markTaskDone(completeTaskRequest););
+            return Mappers.mapCompleteTask(markTaskDone(completeTaskRequest));
         }
         throw new UserNotFoundException();
     }

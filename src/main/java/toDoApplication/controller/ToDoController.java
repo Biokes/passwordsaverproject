@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import toDoApplication.dtos.requests.CompleteTaskRequest;
 import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
-import toDoApplication.dtos.requests.TaskRequest;
+import toDoApplication.dtos.requests.CreateTaskRequest;
 import toDoApplication.dtos.response.ViewTaskResponse;
 import toDoApplication.exception.ToDoManagerExceptions;
 import toDoApplication.services.UserService;
@@ -37,7 +37,7 @@ public class ToDoController{
         }
     }
     @PatchMapping("/create-task")
-    public ResponseEntity<?> createTask(@RequestBody TaskRequest request){
+    public ResponseEntity<?> createTask(@RequestBody CreateTaskRequest request){
         try{
             userService.createTask(request);
             return new ResponseEntity<>("Task created successfully", OK);

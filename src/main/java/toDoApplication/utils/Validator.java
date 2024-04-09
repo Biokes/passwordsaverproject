@@ -3,7 +3,7 @@ package toDoApplication.utils;
 import toDoApplication.dtos.requests.CompleteTaskRequest;
 import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
-import toDoApplication.dtos.requests.TaskRequest;
+import toDoApplication.dtos.requests.CreateTaskRequest;
 import toDoApplication.exception.IncompleteDetailsException;
 import toDoApplication.exception.InvalidDateException;
 
@@ -40,8 +40,8 @@ public class Validator{
         validate(completeTaskRequest.getUsername( ));
         validate(completeTaskRequest.getTaskName( ));
     }
-    public static void validateTaskRequest(TaskRequest taskRequest){
-        validate(taskRequest.getTaskName( ));
-        validate(taskRequest.getUsername( ));
+    public static void validateTaskRequest(CreateTaskRequest createTaskRequest){
+        validate(createTaskRequest.getTaskName( ));
+        validate(createTaskRequest.getUsername( ));
     }
 }

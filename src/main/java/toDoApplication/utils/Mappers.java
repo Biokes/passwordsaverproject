@@ -3,7 +3,7 @@ package toDoApplication.utils;
 import toDoApplication.data.models.Task;
 import toDoApplication.data.models.User;
 import toDoApplication.dtos.requests.RegisterRequest;
-import toDoApplication.dtos.requests.TaskRequest;
+import toDoApplication.dtos.requests.CreateTaskRequest;
 import toDoApplication.dtos.response.CompleteTaskResponse;
 
 import static toDoApplication.utils.Validator.*;
@@ -16,7 +16,7 @@ public class Mappers{
         user.setPassword(request.getPassword());
         return user;
     }
-    public static Task mapToTask(TaskRequest request){
+    public static Task mapToTask(CreateTaskRequest request){
         Task task = new Task();
         task.setTaskUser(request.getUsername());
         task.setTaskName(request.getTaskName());

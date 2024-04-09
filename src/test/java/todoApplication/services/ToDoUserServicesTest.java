@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import toDoApplication.ToDoMain;
 import toDoApplication.dtos.requests.*;
+import toDoApplication.dtos.response.CompleteTaskResponse;
 import toDoApplication.dtos.response.ViewTaskResponse;
 import toDoApplication.exception.*;
 import toDoApplication.services.UserService;
@@ -12,6 +13,7 @@ import toDoApplication.services.UserService;
 import static com.mongodb.internal.connection.tlschannel.util.Util.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static toDoApplication.data.models.TaskStatus.COMPLETED;
 
 @SpringBootTest(classes = ToDoMain.class)
 public class ToDoUserServicesTest{
@@ -69,12 +71,12 @@ public class ToDoUserServicesTest{
         request.setUsername("username");
         request.setPassword("password");
         userService.register(request);
-        TaskRequest taskRequest = new TaskRequest();
-        taskRequest.setUsername("username");
-        taskRequest.setTaskName("task name");
-        taskRequest.setDueDate("12/12/2024");
-        userService.createTask(taskRequest);
-        assertEquals(1,userService.countTasks(taskRequest.getUsername()));
+        CreateTaskRequest createTaskRequest= new CreateTaskRequest();
+        createTaskRequest.setUsername("username");
+        createTaskRequest.setTaskName("task name");
+        createTaskRequest.setDueDate("12/12/2024");
+        userService.createTask(createTaskRequest);
+        assertEquals(1,userService.countTasks(createTaskRequest.getUsername()));
     }
     @Test
     void registerWithInvalidDetails_testExceptionIsThrown(){
@@ -90,17 +92,17 @@ public class ToDoUserServicesTest{
         request.setUsername("username");
         request.setPassword("password");
         userService.register(request);
-        TaskRequest taskRequest = new TaskRequest();
-        taskRequest.setUsername("username");
-        taskRequest.setTaskName("task name");
-        taskRequest.setDueDate("12/12/202");
-        assertThrows(InvalidDateException.class, ()->userService.createTask(taskRequest));
-        assertEquals(0,userService.countTasks(taskRequest.getUsername()));
-        taskRequest.setDueDate("12/12/2022");
-        assertThrows(ElapsedDateException.class, ()->userService.createTask(taskRequest));
-        taskRequest.setDueDate("12/12/2024");
-        userService.createTask(taskRequest);
-        assertEquals(1, userService.countTasks(taskRequest.getUsername()));
+        CreateTaskRequest createTaskRequest= new CreateTaskRequest();
+        createTaskRequest.setUsername("username");
+        createTaskRequest.setTaskName("task name");
+        createTaskRequest.setDueDate("12/12/202");
+        assertThrows(InvalidDateException.class, ()->userService.createTask(createTaskRequest));
+        assertEquals(0,userService.countTasks(createTaskRequest.getUsername()));
+        createTaskRequest.setDueDate("12/12/2022");
+        assertThrows(ElapsedDateException.class, ()->userService.createTask(createTaskRequest));
+        createTaskRequest.setDueDate("12/12/2024");
+        userService.createTask(createTaskRequest);
+        assertEquals(1, userService.countTasks(createTaskRequest.getUsername()));
     }
     @Test
     void completeTask_testTaskIsCompleted(){
@@ -108,12 +110,12 @@ public class ToDoUserServicesTest{
         request.setUsername("username");
         request.setPassword("password");
         userService.register(request);
-        TaskRequest taskRequest = new TaskRequest();
-        taskRequest.setUsername("username");
-        taskRequest.setTaskName("fishing");
-        taskRequest.setDueDate("12/12/2024");
-        userService.createTask(taskRequest);
-        assertEquals(1, userService.countTasks(taskRequest.getUsername()));
+        CreateTaskRequest createTaskRequest= new CreateTaskRequest();
+        createTaskRequest.setUsername("username");
+        createTaskRequest.setTaskName("fishing");
+        createTaskRequest.setDueDate("12/12/2024");
+        userService.createTask(createTaskRequest);
+        assertEquals(1, userService.countTasks(createTaskRequest.getUsername()));
         CompleteTaskRequest completeTaskRequest= new CompleteTaskRequest();
         completeTaskRequest.setUsername("username");
         completeTaskRequest.setTaskName("fishing12");
@@ -132,11 +134,11 @@ public class ToDoUserServicesTest{
         request.setUsername("username");
         request.setPassword("password");
         userService.register(request);
-        TaskRequest taskRequest = new TaskRequest();
-        taskRequest.setUsername("username");
-        taskRequest.setTaskName("fishing");
-        taskRequest.setDueDate("12/12/2024");
-        userService.createTask(taskRequest);
+        CreateTaskRequest createTaskRequest= new CreateTaskRequest();
+        createTaskRequest.setUsername("username");
+        createTaskRequest.setTaskName("fishing");
+        createTaskRequest.setDueDate("12/12/2024");
+        userService.createTask(createTaskRequest);
         DetailsRequest detailsRequest = new DetailsRequest();
         detailsRequest.setUsername("username");
         detailsRequest.setPassword("password");
@@ -168,25 +170,25 @@ public class ToDoUserServicesTest{
         details.setPassword("password");
         assertThrows(IncompleteDetailsException.class,()->userService.deleteUser(details));
         details.setUsername("user101");
-        TaskRequest taskRequest = new TaskRequest();
-        taskRequest.setUsername("username");
-        taskRequest.setTaskName("fishing");
-        taskRequest.setDueDate("12/12/2024");
-        assertThrows(UserNotFoundException.class,()->userService.createTask(taskRequest));
-        taskRequest.setUsername("user101");
-        userService.createTask(taskRequest);
+        CreateTaskRequest createTaskRequest= new CreateTaskRequest();
+        createTaskRequest.setUsername("username");
+        createTaskRequest.setTaskName("fishing");
+        createTaskRequest.setDueDate("12/12/2024");
+        assertThrows(UserNotFoundException.class,()->userService.createTask(createTaskRequest));
+        createTaskRequest.setUsername("user101");
+        userService.createTask(createTaskRequest);
         assertEquals(1, userService.countTasks("user101"));
         assertThrows(UserNotFoundException.class,()->userService.countTasks("user10"));
         userService.deleteUser(details);
         assertThrows(UserNotFoundException.class,()->userService.countTasks("user101"));
     }
     @Test
-    void completeTask_testTimeFrameIsRetured(){
+    void completeTask_testTimeFrameIsRetured() throws InterruptedException{
         RegisterRequest request = new RegisterRequest();
         request.setUsername("abbey");
         request.setPassword("pasword");
         userService.register(request);
-        TaskRequest createTask = new TaskRequest();
+        CreateTaskRequest createTask = new CreateTaskRequest();
         createTask.setUsername("abbey");
         createTask.setTaskName("learn archery");
         userService.createTask(createTask);
@@ -194,8 +196,12 @@ public class ToDoUserServicesTest{
         CompleteTaskRequest completeTaskRequest = new CompleteTaskRequest();
         completeTaskRequest.setUsername("abbey");
         completeTaskRequest.setTaskName("learn archery");
-        CompleteTaskRequest response = userService.completeTask(completeTaskRequest);
-        assertEquals();
+        Thread.sleep(10000);
+        CompleteTaskResponse response = userService.completeTask(completeTaskRequest);
+        assertEquals("abbey", response.getUsername());
+        assertEquals("learn archery", response.getTaskName());
+        assertEquals(COMPLETED, response.getStatus());
+        assertEquals("10 seconds",response .getDuration());
     }
 
 }
