@@ -7,7 +7,7 @@ import toDoApplication.dtos.requests.CompleteRequest;
 
 import java.util.List;
 
-@Service
+
 public interface TasksServices{
     void create(Task task);
     long countUserTasks(String username);

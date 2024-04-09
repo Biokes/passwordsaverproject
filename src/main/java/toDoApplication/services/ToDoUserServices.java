@@ -1,6 +1,7 @@
 package toDoApplication.services;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import toDoApplication.data.models.Task;
 import toDoApplication.data.models.User;
@@ -16,7 +17,6 @@ import toDoApplication.exception.UsernameTakenException;
 import toDoApplication.utils.Mappers;
 import toDoApplication.utils.Validator;
 
-import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +27,6 @@ import static toDoApplication.utils.Mappers.mapToTask;
 import static toDoApplication.utils.Validator.*;
 
 @Service
-@AllArgsConstructor
 public class ToDoUserServices implements UserService{
     public void save(User user){
         userRepository.save(user);
@@ -45,14 +44,15 @@ public class ToDoUserServices implements UserService{
     public void deleteUser(DetailsRequest detailsRequest){
         Validator.validateDetailsRequest(detailsRequest);
         List<User> users = userRepository.findAll();
-        for(User user: users){
-            if(user.getUsername().equalsIgnoreCase(detailsRequest.getUsername()) &&
-            user.getPassword().equalsIgnoreCase(detailsRequest.getPassword())){
-                userRepository.delete(user);
-                tasksServices.deleteUserTasks(detailsRequest.getUsername());
-                return;
+        if(!users.isEmpty())
+            for(User user: users){
+                if(user.getUsername().equalsIgnoreCase(detailsRequest.getUsername()) &&
+                user.getPassword().equalsIgnoreCase(detailsRequest.getPassword())){
+                    userRepository.delete(user);
+                    tasksServices.deleteUserTasks(detailsRequest.getUsername());
+                    return;
+                }
             }
-        }
         throw new UserNotFoundException();
     }
     public void createTask(TaskRequest taskRequest){
@@ -131,6 +131,9 @@ public class ToDoUserServices implements UserService{
         return user.isPresent( )&&user.get( ).getPassword( ).equalsIgnoreCase(request.getPassword( ));
     }
 
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
     private TasksServices tasksServices;
 }

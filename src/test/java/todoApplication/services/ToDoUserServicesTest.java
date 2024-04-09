@@ -9,12 +9,18 @@ import toDoApplication.dtos.response.ViewTaskResponse;
 import toDoApplication.exception.*;
 import toDoApplication.services.UserService;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static com.mongodb.internal.connection.tlschannel.util.Util.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest(classes= ToDoMain.class)
+@SpringBootTest(classes = ToDoMain.class)
 public class ToDoUserServicesTest{
+
+    @Autowired
+  private UserService userService;
+
     @BeforeEach
-    void wipe(){
+    public void setUp(){
         userService.deleteAll();
     }
     @Test
@@ -174,7 +180,5 @@ public class ToDoUserServicesTest{
         userService.deleteUser(details);
         assertThrows(UserNotFoundException.class,()->userService.countTasks("user101"));
     }
-    @Autowired
-    private UserService userService;
 
 }

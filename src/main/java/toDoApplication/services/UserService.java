@@ -7,7 +7,6 @@ import toDoApplication.dtos.requests.RegisterRequest;
 import toDoApplication.dtos.requests.TaskRequest;
 import toDoApplication.dtos.response.ViewTaskResponse;
 
-@Service
 public interface UserService{
     void save(User user);
     long count();

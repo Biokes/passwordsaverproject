@@ -1,6 +1,7 @@
 package toDoApplication.services;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import toDoApplication.data.models.Task;
 import toDoApplication.data.repository.TaskRepository;
@@ -49,5 +50,6 @@ public class ToDoTaskService implements TasksServices{
         taskRepository.deleteAll(taskRepository.findByTaskUser(username));
     }
 
+    @Autowired
     private TaskRepository taskRepository;
 }
