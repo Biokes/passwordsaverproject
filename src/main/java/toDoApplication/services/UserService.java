@@ -1,10 +1,10 @@
 package toDoApplication.services;
-import org.springframework.stereotype.Service;
 import toDoApplication.data.models.User;
-import toDoApplication.dtos.requests.CompleteRequest;
+import toDoApplication.dtos.requests.CompleteTaskRequest;
 import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
 import toDoApplication.dtos.requests.TaskRequest;
+import toDoApplication.dtos.response.CompleteTaskResponse;
 import toDoApplication.dtos.response.ViewTaskResponse;
 
 public interface UserService{
@@ -15,7 +15,7 @@ public interface UserService{
     void createTask(TaskRequest taskRequest);
     long countTasks(String username);
     void deleteAll();
-    void completeTask(CompleteRequest completeRequest);
-    boolean isTaskCompleted(CompleteRequest completeRequest);
+    CompleteTaskResponse completeTask(CompleteTaskRequest completeTaskRequest);
+    boolean isTaskCompleted(CompleteTaskRequest completeTaskRequest);
     ViewTaskResponse viewAllTasks(DetailsRequest request);
 }

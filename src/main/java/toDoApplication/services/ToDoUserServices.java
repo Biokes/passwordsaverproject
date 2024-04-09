@@ -1,15 +1,15 @@
 package toDoApplication.services;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import toDoApplication.data.models.Task;
 import toDoApplication.data.models.User;
 import toDoApplication.data.repository.UserRepository;
-import toDoApplication.dtos.requests.CompleteRequest;
+import toDoApplication.dtos.requests.CompleteTaskRequest;
 import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
 import toDoApplication.dtos.requests.TaskRequest;
+import toDoApplication.dtos.response.CompleteTaskResponse;
 import toDoApplication.dtos.response.ViewTaskResponse;
 import toDoApplication.exception.TaskDoesNotExistException;
 import toDoApplication.exception.UserNotFoundException;
@@ -71,18 +71,17 @@ public class ToDoUserServices implements UserService{
         userRepository.deleteAll();
         tasksServices.deleteAll();
     }
-    public void completeTask(CompleteRequest completeRequest){
-        validateCompleteRequest(completeRequest);
-        if(isUsernameExisting(completeRequest.getUsername())){
-            markTaskDone(completeRequest);
-            return;
+    public CompleteTaskResponse completeTask(CompleteTaskRequest completeTaskRequest){
+        validateCompleteRequest(completeTaskRequest);
+        if(isUsernameExisting(completeTaskRequest.getUsername())){
+            return Mappers.mapCompleteTask(markTaskDone(completeTaskRequest););
         }
         throw new UserNotFoundException();
     }
-    public boolean isTaskCompleted(CompleteRequest completeRequest){
-        validateCompleteRequest(completeRequest);
-        confirmUsername(completeRequest.getUsername());
-        return tasksServices.findTask(completeRequest).getStatus() == COMPLETED;
+    public boolean isTaskCompleted(CompleteTaskRequest completeTaskRequest){
+        validateCompleteRequest(completeTaskRequest);
+        confirmUsername(completeTaskRequest.getUsername());
+        return tasksServices.findTask(completeTaskRequest).getStatus() == COMPLETED;
     }
     public ViewTaskResponse viewAllTasks(DetailsRequest request){
         validateDetailsRequest(request);
@@ -99,7 +98,7 @@ public class ToDoUserServices implements UserService{
         for(Task task : tasksServices.findUserTasks(username)){
             output.append(String.format("Task Name : %s\nDue Date : %s\nStatus : %s\n",
                     task.getTaskName(),
-                    task.getDuedate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                    task.getStartDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                     task.getStatus()));
         }
         if( output.isEmpty( ))
@@ -110,13 +109,13 @@ public class ToDoUserServices implements UserService{
         if(!isUsernameExisting(username))
             throw new UserNotFoundException();
     }
-    private void markTaskDone(CompleteRequest request){
+    private Task markTaskDone(CompleteTaskRequest request){
         for(Task task : tasksServices.findAll( )){
             if(task.getTaskUser().equalsIgnoreCase(request.getUsername())){
                 if( task.getTaskName( ).equalsIgnoreCase(request.getTaskName( )) ){
                     task.setStatus(COMPLETED);
                     tasksServices.save(task);
-                    return;
+                    return task;
                 }
             }
         }

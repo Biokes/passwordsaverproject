@@ -4,8 +4,7 @@ import toDoApplication.data.models.Task;
 import toDoApplication.data.models.User;
 import toDoApplication.dtos.requests.RegisterRequest;
 import toDoApplication.dtos.requests.TaskRequest;
-import toDoApplication.exception.ElapsedDateException;
-import toDoApplication.exception.InvalidDateException;
+import toDoApplication.dtos.response.CompleteTaskResponse;
 
 import static toDoApplication.utils.Validator.*;
 
@@ -21,15 +20,15 @@ public class Mappers{
         Task task = new Task();
         task.setTaskUser(request.getUsername());
         task.setTaskName(request.getTaskName());
-        try{
-            request.setDueDate(request.getDueDate( ).replaceAll("\\D", "/"));
-            task.setDuedate(validateDate(request.getDueDate( )));
-        }catch(Exception error){
-            throw new InvalidDateException();
-        }
-        if(isElapsed(task.getDuedate()))
-            throw new ElapsedDateException();
         return task;
     }
 
+    public static CompleteTaskResponse mapCompleteTask(Task task){
+        CompleteTaskResponse response = new CompleteTaskResponse();
+        response.setUsername(task.getTaskUser());
+        response.setDuration(task.getStartDate());
+        response.setStatus(task.getStatus());
+        response.setTaskName(task.getTaskName());
+        return response;
+    }
 }

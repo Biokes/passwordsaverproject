@@ -1,8 +1,8 @@
 package toDoApplication.controller;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import toDoApplication.dtos.requests.CompleteRequest;
+import toDoApplication.dtos.requests.CompleteTaskRequest;
 import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
 import toDoApplication.dtos.requests.TaskRequest;
@@ -12,9 +12,9 @@ import toDoApplication.services.UserService;
 
 import static org.springframework.http.HttpStatus.*;
 @RestController
-@AllArgsConstructor
 @RequestMapping("/ToDo")
 public class ToDoController{
+    @Autowired
     private UserService userService;
     @PostMapping("/Register")
     public ResponseEntity<?> createAccount(@RequestBody RegisterRequest request){
@@ -47,7 +47,7 @@ public class ToDoController{
         }
     }
     @PostMapping("/mark-task-Done")
-    public ResponseEntity<?> markTaskAsDone(@RequestBody CompleteRequest request){
+    public ResponseEntity<?> markTaskAsDone(@RequestBody CompleteTaskRequest request){
         try{
             userService.completeTask(request);
             return new ResponseEntity<>("successfully marked", OK);

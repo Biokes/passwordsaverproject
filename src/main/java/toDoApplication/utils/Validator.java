@@ -1,6 +1,6 @@
 package toDoApplication.utils;
 
-import toDoApplication.dtos.requests.CompleteRequest;
+import toDoApplication.dtos.requests.CompleteTaskRequest;
 import toDoApplication.dtos.requests.DetailsRequest;
 import toDoApplication.dtos.requests.RegisterRequest;
 import toDoApplication.dtos.requests.TaskRequest;
@@ -20,8 +20,9 @@ public class Validator{
         details = details.strip();
     }
     public static void validateRegisterRequest(RegisterRequest request){
-        validate(request.getPassword().strip());
-        validate(request.getUsername().strip());
+
+        validate(request.getPassword());
+        validate(request.getUsername());
     }
     public static LocalDate validateDate(String date) throws ParseException{
         if(date.length()!= 10)
@@ -35,13 +36,12 @@ public class Validator{
         validate(detailsRequest.getUsername( ));
         validate(detailsRequest.getPassword( ));
     }
-    public static void validateCompleteRequest(CompleteRequest completeRequest){
-        validate(completeRequest.getUsername( ));
-        validate(completeRequest.getTaskName( ));
+    public static void validateCompleteRequest(CompleteTaskRequest completeTaskRequest){
+        validate(completeTaskRequest.getUsername( ));
+        validate(completeTaskRequest.getTaskName( ));
     }
     public static void validateTaskRequest(TaskRequest taskRequest){
         validate(taskRequest.getTaskName( ));
         validate(taskRequest.getUsername( ));
-        validate(taskRequest.getDueDate( ));
     }
 }

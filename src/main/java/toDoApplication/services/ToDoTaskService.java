@@ -5,12 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import toDoApplication.data.models.Task;
 import toDoApplication.data.repository.TaskRepository;
-import toDoApplication.dtos.requests.CompleteRequest;
+import toDoApplication.dtos.requests.CompleteTaskRequest;
 import toDoApplication.exception.TaskDoesNotExistException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -30,10 +29,10 @@ public class ToDoTaskService implements TasksServices{
     public void save(Task task){
         taskRepository.save(task);
     }
-    public Task findTask(CompleteRequest completeRequest){
+    public Task findTask(CompleteTaskRequest completeTaskRequest){
         for(Task task : findAll()){
-            if(task.getTaskUser().equalsIgnoreCase(completeRequest.getUsername())
-                       && task.getTaskName().equalsIgnoreCase(completeRequest.getTaskName()))
+            if(task.getTaskUser().equalsIgnoreCase(completeTaskRequest.getUsername())
+                       && task.getTaskName().equalsIgnoreCase(completeTaskRequest.getTaskName()))
                 return task;
         }
         throw new TaskDoesNotExistException();

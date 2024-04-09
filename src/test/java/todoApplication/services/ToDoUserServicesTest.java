@@ -114,20 +114,20 @@ public class ToDoUserServicesTest{
         taskRequest.setDueDate("12/12/2024");
         userService.createTask(taskRequest);
         assertEquals(1, userService.countTasks(taskRequest.getUsername()));
-        CompleteRequest completeRequest = new CompleteRequest();
-        completeRequest.setUsername("username");
-        completeRequest.setTaskName("fishing12");
-        assertThrows(TaskDoesNotExistException.class,()->userService.completeTask(completeRequest));
-        completeRequest.setUsername("username12");
-        completeRequest.setTaskName("fishing");
-        assertThrows(UserNotFoundException.class,()->userService.completeTask(completeRequest));
-        completeRequest.setUsername("username");
-        completeRequest.setTaskName("fishing");
-        userService.completeTask(completeRequest);
-        assertTrue(userService.isTaskCompleted(completeRequest));
+        CompleteTaskRequest completeTaskRequest= new CompleteTaskRequest();
+        completeTaskRequest.setUsername("username");
+        completeTaskRequest.setTaskName("fishing12");
+        assertThrows(TaskDoesNotExistException.class,()->userService.completeTask(completeTaskRequest));
+        completeTaskRequest.setUsername("username12");
+        completeTaskRequest.setTaskName("fishing");
+        assertThrows(UserNotFoundException.class,()->userService.completeTask(completeTaskRequest));
+        completeTaskRequest.setUsername("username");
+        completeTaskRequest.setTaskName("fishing");
+        userService.completeTask(completeTaskRequest);
+        assertTrue(userService.isTaskCompleted(completeTaskRequest));
     }
     @Test
-    void viewAllTask_testAllTAskIsViewed(){
+    void viewAllTask_testAllTaskIsViewed(){
         RegisterRequest request = new RegisterRequest();
         request.setUsername("username");
         request.setPassword("password");
@@ -144,10 +144,10 @@ public class ToDoUserServicesTest{
         assertEquals(String.format("Task Name : %s\nDue Date : %s\nStatus : %s\n",
                         "fishing","12/12/2024","NOT_COMPLETED"),
                 expected.getBody());
-        CompleteRequest completeRequest = new CompleteRequest();
-        completeRequest.setUsername("username");
-        completeRequest.setTaskName("fishing");
-        userService.completeTask(completeRequest);
+        CompleteTaskRequest completeTaskRequest= new CompleteTaskRequest();
+        completeTaskRequest.setUsername("username");
+        completeTaskRequest.setTaskName("fishing");
+        userService.completeTask(completeTaskRequest);
         expected = userService.viewAllTasks(detailsRequest);
         assertEquals(String.format("Task Name : %s\nDue Date : %s\nStatus : %s\n",
                         "fishing","12/12/2024","COMPLETED"),
@@ -179,6 +179,23 @@ public class ToDoUserServicesTest{
         assertThrows(UserNotFoundException.class,()->userService.countTasks("user10"));
         userService.deleteUser(details);
         assertThrows(UserNotFoundException.class,()->userService.countTasks("user101"));
+    }
+    @Test
+    void completeTask_testTimeFrameIsRetured(){
+        RegisterRequest request = new RegisterRequest();
+        request.setUsername("abbey");
+        request.setPassword("pasword");
+        userService.register(request);
+        TaskRequest createTask = new TaskRequest();
+        createTask.setUsername("abbey");
+        createTask.setTaskName("learn archery");
+        userService.createTask(createTask);
+        assertEquals(1, userService.countTasks("abbey"));
+        CompleteTaskRequest completeTaskRequest = new CompleteTaskRequest();
+        completeTaskRequest.setUsername("abbey");
+        completeTaskRequest.setTaskName("learn archery");
+        CompleteTaskRequest response = userService.completeTask(completeTaskRequest);
+        assertEquals();
     }
 
 }
