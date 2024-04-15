@@ -15,5 +15,6 @@ public class Task{
     private String taskUser;
     private LocalDateTime startDate;
     private TaskStatus status;
+    private LocalDateTime taskDuration;
 
 }

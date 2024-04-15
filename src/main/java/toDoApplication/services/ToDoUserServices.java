@@ -17,6 +17,9 @@ import toDoApplication.exception.UsernameTakenException;
 import toDoApplication.utils.Mappers;
 import toDoApplication.utils.Validator;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -96,10 +99,11 @@ public class ToDoUserServices implements UserService{
         confirmUsername(username);
         StringBuilder output = new StringBuilder();
         for(Task task : tasksServices.findUserTasks(username)){
-            output.append(String.format("Task Name : %s\nDue Date : %s\nStatus : %s\n",
+            output.append(String.format("Task Name : %s\nDate created : %s\nStatus : %s\nDuration : %s",
                     task.getTaskName(),
                     task.getStartDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                    task.getStatus()));
+                    task.getStatus(),
+                    Duration.between(task.getStartDate(),LocalDateTime.now( ))));
         }
         if( output.isEmpty( ))
             return "no tasks yet";
